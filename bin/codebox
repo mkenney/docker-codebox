@@ -1,0 +1,48 @@
+
+#!/usr/bin/env sh
+
+IMAGE=mkenney/codebox
+TAG=latest
+BRANCH=master
+SCRIPT=grunt
+INSTALL_SCRIPT=https://raw.githubusercontent.com/mkenney/docker-npm/master/bin/install.sh
+
+PROJECT_NAME=$(basename $(pwd))
+
+if [ "self-update" = "$1" ]; then
+    docker pull $IMAGE:$TAG
+
+elif [ "stop" = "$1" ]; then
+    docker stop $PROJECT_NAME
+    docker rm $PROJECT_NAME
+
+else
+    if [ -t 0 ]; then
+        term_type=ti
+    else
+        term_type=i
+    fi
+    docker stop $PROJECT_NAME && docker rm $PROJECT_NAME
+    docker run -d \
+        -$term_type \
+        --name="$PROJECT_NAME" \
+        -p 8080:8080 \
+        -v $(pwd):/src:rw \
+        $IMAGE:$TAG -p 80 /src --open
+fi
+
+#
+## Set the directory we're going to run Codebox in
+#workingdir=$(pwd)
+#
+## Move to Dockerfile directory
+##cd $(dirname "$0")
+#
+## Build image
+#docker build -t codebox -f Dockerfile .
+#
+## Build container
+#docker run --name="codebox" -p 8080:8080 -v $workingdir:/workspace -P codebox -p 8080 /workspace --open
+#
+#cd $workingdir
+
