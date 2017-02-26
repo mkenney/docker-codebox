@@ -1,11 +1,11 @@
 
 #!/usr/bin/env sh
 
-IMAGE=mkenney/codebox
+#IMAGE=mkenney/codebox
+IMAGE=codebox
 TAG=latest
 BRANCH=master
 SCRIPT=grunt
-INSTALL_SCRIPT=https://raw.githubusercontent.com/mkenney/docker-npm/master/bin/install.sh
 
 PROJECT_NAME=$(basename $(pwd))
 
@@ -26,7 +26,7 @@ else
     docker run -d \
         -$term_type \
         --name="$PROJECT_NAME" \
-        -p 8080:8080 \
+        -p 8080:80 \
         -v $(pwd):/src:rw \
         $IMAGE:$TAG -p 80 /src --open
 fi

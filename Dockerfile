@@ -1,8 +1,7 @@
 FROM node:0.10
 
-WORKDIR /workspace
+RUN npm -g install codebox && mkdir /src
 
-RUN npm -g install codebox
+WORKDIR /src
 
 ENTRYPOINT ["codebox", "run"]
-
